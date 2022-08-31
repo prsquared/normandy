@@ -22,6 +22,14 @@ public class Fixture {
         return result;
     }
 
+    public void setHomeTeam(Team homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+
+    public void setAwayTeam(Team awayTeam) {
+        this.awayTeam = awayTeam;
+    }
+
     public void setResult(Result result) {
         this.result = result;
     }

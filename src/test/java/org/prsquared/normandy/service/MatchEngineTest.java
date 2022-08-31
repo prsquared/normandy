@@ -19,9 +19,14 @@ class MatchEngineTest {
         int homeWinCount = 0;
         int awayWinCount = 0;
         int drawCount = 0;
-        for (int i = 0; i < 100; i ++) {
+        for (int i = 0; i < 10000; i ++) {
             engine.resetInstanceVars();
-            Result result = engine.playGame(homeTeam,awayTeam);
+            Result result = null;
+            try {
+                result = engine.playGame(homeTeam,awayTeam);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             System.out.println("Test "+i+", result :" + result.getScoreString());
             if(ResultType.HOMEWIN.equals(result.getResultType())) {
                 homeWinCount++;
@@ -34,5 +39,23 @@ class MatchEngineTest {
         System.out.println("Home wins:" + homeWinCount);
         System.out.println("Away wins:" + awayWinCount);
         System.out.println("Draws:" + drawCount);
+    }
+
+    @Test
+    void TestPlayGame_Single() {
+        MatchEngine engine =  new MatchEngine();
+        engine.isTest = false;
+        Team homeTeam = new Team("A",86,86);
+        Team awayTeam = new Team("B",66,66);
+        int homeWinCount = 0;
+        int awayWinCount = 0;
+        int drawCount = 0;
+        engine.resetInstanceVars();
+        Result result = null;
+        try {
+            result = engine.playGame(homeTeam,awayTeam);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

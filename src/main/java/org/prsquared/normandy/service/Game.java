@@ -17,7 +17,11 @@ public class Game {
         Team homeTeam = new Team("Manchester United",85,85);
         Team awayTeam = new Team("Manchester City",86,86);
 
-        return engine.playGame(homeTeam,awayTeam);
+        try {
+            return engine.playGame(homeTeam,awayTeam);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

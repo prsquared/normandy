@@ -3,17 +3,17 @@ package org.prsquared.normandy.model;
 import java.util.List;
 
 public class Schedule {
-    private List<Fixture> rounds;
+    private List<Round> rounds;
 
-    public Schedule(List<Fixture> rounds) {
+    public Schedule(List<Round> rounds) {
         this.rounds = rounds;
     }
 
-    public List<Fixture> getRounds() {
+    public List<Round> getRounds() {
         return rounds;
     }
 
-    public void setRounds(List<Fixture> rounds) {
+    public void setRounds(List<Round> rounds) {
         this.rounds = rounds;
     }
 }

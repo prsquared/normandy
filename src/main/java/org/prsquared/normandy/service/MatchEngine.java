@@ -20,14 +20,12 @@ public class MatchEngine {
         homeTeamModifier = 0;
         awayTeamModifier = 0;
     }
-    public  Result playGame(Team home, Team away) {
+    public  Result playGame(Team home, Team away) throws InterruptedException {
         int homeGoals = 0;
         int awayGoals = 0;
-        homeAttackChance = (home.getOffence() - away.getDefence())/4;
-        homeAttackChance = homeAttackChance <= 0 ? 4 : homeAttackChance + 4;
-        awayAttackChance = (away.getOffence() - home.getDefence())/4;
-        awayAttackChance = awayAttackChance <= 0 ? 4 : awayAttackChance + 4;
-        homeTeamModifier = homeAttackChance + IncidentType.HOMEGOALTHREAT.getIncidentChance() + 1;
+        homeAttackChance = calculateAttackChance(home.getOffence(),away.getDefence());
+        awayAttackChance = calculateAttackChance(away.getOffence(),home.getDefence());
+        homeTeamModifier = homeAttackChance + IncidentType.HOMEGOALTHREAT.getIncidentChance();
         awayTeamModifier = homeTeamModifier + awayAttackChance + IncidentType.AWAYGOALTHREAT.getIncidentChance();
         System.out.println("Game has started");
         for(int minute = 0; minute < 45; minute++) {
@@ -35,7 +33,7 @@ public class MatchEngine {
             if(IncidentType.HOMEGOALTHREAT.equals(incident)) {
                 if(!isTest)
                 System.out.println("Min: "+minute+"- Chance for "+home.getName());
-                if(success(home.getOffence())) {
+                if(success(home.getOffence(), away.getDefence())) {
                     if(!isTest)
                     System.out.println("Min: "+minute+"- "+home.getName()+" has scored");
                     homeGoals++;
@@ -43,7 +41,7 @@ public class MatchEngine {
             } else if(IncidentType.AWAYGOALTHREAT.equals(incident)) {
                 if(!isTest)
                 System.out.println("Min: "+minute+"- Chance for "+away.getName());
-                if(success(away.getOffence())) {
+                if(success(away.getOffence(), home.getDefence())) {
                     if(!isTest)
                     System.out.println("Min: "+minute+"- "+away.getName()+" has scored");
                     awayGoals++;
@@ -53,26 +51,36 @@ public class MatchEngine {
         for(int minute = 46; minute < 90; minute++) {
             IncidentType incident = getIncident();
             if(IncidentType.HOMEGOALTHREAT.equals(incident)) {
-                if(!isTest)
-                System.out.println("Min: "+minute+"- Chance for "+home.getName());
-                if(success(home.getOffence())) {
-                    if(!isTest)
-                    System.out.println("Min: "+minute+"- "+home.getName()+" has scored");
+                if(!isTest) {
+                    Thread.sleep(1500);
+                    System.out.println("Min: " + minute + "- Chance for " + home.getName());
+                }
+                if(success(home.getOffence(), away.getDefence())) {
+                    if(!isTest) {
+                        Thread.sleep(2000);
+                        System.out.println("Min: " + minute + "- " + home.getName() + " has scored");
+                    }
                     homeGoals++;
                 }
             } else if(IncidentType.AWAYGOALTHREAT.equals(incident)) {
-                if(!isTest)
-                System.out.println("Min: "+minute+"- Chance for "+away.getName());
-                if(success(away.getOffence())) {
-                    if(!isTest)
-                    System.out.println("Min: "+minute+"- "+away.getName()+" has scored");
+                if(!isTest) {
+                    Thread.sleep(1500);
+                    System.out.println("Min: " + minute + "- Chance for " + away.getName());
+                }
+                if(success(away.getOffence(), home.getDefence())) {
+                    if(!isTest) {
+                        Thread.sleep(2000);
+                        System.out.println("Min: " + minute + "- " + away.getName() + " has scored");
+                    }
                     awayGoals++;
                 }
             }
         }
         Result result = new Result(home, away, homeGoals,awayGoals);
-        if(!isTest)
-        System.out.println("Game has ended with a score of "+ result.getScoreString());
+        if(!isTest) {
+            Thread.sleep(1500);
+            System.out.println("Game has ended with a score of " + result.getScoreString());
+        }
 
 
         return result;
@@ -93,12 +101,24 @@ public class MatchEngine {
         }
     }
 
-    private static boolean success(int probability) {
+    private static boolean success(int offence, int defence) {
         Random random = new Random();
         int randNum = random.nextInt(101);
-        if(randNum <= probability - 20) {
+        if(randNum <= offence - (20 - (offence - defence))) {
             return true;
         }
         return false;
+    }
+
+    private static int calculateAttackChance(int attack, int defence) {
+        int chance = (attack - defence)/4;
+        if(chance < -5) {
+            chance = 1;
+        } else if (chance < 5) {
+            chance += 5;
+        } else {
+            chance += 6;
+        }
+        return chance;
     }
 }

@@ -2,22 +2,27 @@ package org.prsquared.normandy.model;
 
 import org.prsquared.normandy.enums.ResultType;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 @Component
 public class Result {
 
     private Team homeTeam;
-    private Team awaTeam;
+    private Team awayTeam;
     private String scoreString;
     private Integer homeGoals;
     private Integer awayGoals;
     private ResultType resultType;
 
-    public Result(Team homeTeam, Team awaTeam, Integer homeGoals, Integer awayGoals) {
+    public Result(Team homeTeam, Team awayTeam, Integer homeGoals, Integer awayGoals) {
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
         this.homeGoals = homeGoals;
         this.awayGoals = awayGoals;
-        this.scoreString = this.homeGoals.toString()+"-"+this.awayGoals.toString();
+        this.scoreString = this.homeTeam.getName() + " "
+                + this.homeGoals.toString()
+                +"-"+this.awayGoals.toString()
+                + " "
+                + this.awayTeam.getName();
         if(this.homeGoals > this.awayGoals) {
             resultType = ResultType.HOMEWIN;
         } else if(this.awayGoals > this.homeGoals) {

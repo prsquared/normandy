@@ -1,9 +1,13 @@
 package org.prsquared.normandy.service;
 
+import org.prsquared.normandy.model.Fixture;
+import org.prsquared.normandy.model.Round;
+import org.prsquared.normandy.model.Schedule;
 import org.prsquared.normandy.model.Team;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Scheduler {
@@ -38,8 +42,9 @@ public class Scheduler {
         int totalRounds = teams - 1;
         int matchesPerRound = teams / 2;
         String[][] rounds = new String[totalRounds][matchesPerRound];
-
+        List<Round> roundList = new ArrayList<>();
         for (int round = 0; round < totalRounds; round++) {
+            List<Fixture> fixtureList = new ArrayList<>();
             for (int match = 0; match < matchesPerRound; match++) {
                 int home = (round + match) % (teams - 1);
                 int away = (teams - 1 - match + round) % (teams - 1);
@@ -48,22 +53,23 @@ public class Scheduler {
                 if (match == 0) {
                     away = teams - 1;
                 }
+                Fixture fixture = new Fixture(teamList.get(home),teamList.get(away));
                 // Add one so teams are number 1 to teams not 0 to teams - 1
                 // upon display.
-                rounds[round][match] = (home + 1) + " v " + (away + 1);
+                fixtureList.add(fixture);
             }
+            roundList.add(new Round(fixtureList));
         }
-
+        Schedule schedule = new Schedule(roundList);
         // Interleave so that home and away games are fairly evenly dispersed.
-        String[][] interleaved = new String[totalRounds][matchesPerRound];
-
+        String[][] interleaved = new String[totalRounds][ ];
         int evn = 0;
         int odd = (teams / 2);
         for (int i = 0; i < rounds.length; i++) {
             if (i % 2 == 0) {
-                interleaved[i] = rounds[evn++];
+                Collections.swap(roundList,i,evn++);
             } else {
-                interleaved[i] = rounds[odd++];
+                Collections.swap(roundList,i,odd++);
             }
         }
 
@@ -73,14 +79,22 @@ public class Scheduler {
         // to home on odd rounds.
         for (int round = 0; round < rounds.length; round++) {
             if (round % 2 == 1) {
-                rounds[round][0] = flip(rounds[round][0]);
+
+                Round rnd = roundList.get(round);
+                flip(rnd.getFixtures().get(0));
+                //rounds[round][0] = flip(rounds[round][0]);
             }
         }
 
         // Display the fixtures
-        for (int i = 0; i < rounds.length; i++) {
-            System.out.println("Round " + (i + 1));
-            System.out.println(Arrays.asList(rounds[i]));
+        int i =0;
+        for (Round round: roundList) {
+            System.out.println("Round " + (++i));
+            System.out.println("--------");
+            for(Fixture fixture: round.getFixtures()) {
+                System.out.println(fixture.getHomeTeam().getName() + " v " + fixture.getAwayTeam().getName());
+            }
+            System.out.println();
             System.out.println();
         }
 
@@ -90,8 +104,56 @@ public class Scheduler {
                 + "return fixtures.");
     }
 
-    private static String flip(String match) {
-        String[] components = match.split(" v ");
-        return components[1] + " v " + components[0];
+    public Schedule createSchedule(List<Team> teamList) {
+        int teams = teamList.size();
+        // Generate the fixtures using the cyclic algorithm.
+        int totalRounds = teams - 1;
+        int matchesPerRound = teams / 2;
+        String[][] rounds = new String[totalRounds][matchesPerRound];
+        List<Round> roundList = new ArrayList<>();
+        for (int round = 0; round < totalRounds; round++) {
+            List<Fixture> fixtureList = new ArrayList<>();
+            for (int match = 0; match < matchesPerRound; match++) {
+                int home = (round + match) % (teams - 1);
+                int away = (teams - 1 - match + round) % (teams - 1);
+                // Last team stays in the same place while the others
+                // rotate around it.
+                if (match == 0) {
+                    away = teams - 1;
+                }
+                Fixture fixture = new Fixture(teamList.get(home),teamList.get(away));
+                // Add one so teams are number 1 to teams not 0 to teams - 1
+                // upon display.
+                fixtureList.add(fixture);
+            }
+            roundList.add(new Round(fixtureList));
+        }
+        Schedule schedule = new Schedule(roundList);
+        // Interleave so that home and away games are fairly evenly dispersed.
+        int evn = 0;
+        int odd = (teams / 2);
+        for (int i = 0; i < rounds.length; i++) {
+            if (i % 2 == 0) {
+                Collections.swap(roundList,i,evn++);
+            } else {
+                Collections.swap(roundList,i,odd++);
+            }
+        }
+        // Last team can't be away for every game so flip them
+        // to home on odd rounds.
+        for (int round = 0; round < rounds.length; round++) {
+            if (round % 2 == 1) {
+
+                Round rnd = roundList.get(round);
+                flip(rnd.getFixtures().get(0));
+            }
+        }
+        return schedule;
+    }
+
+    private static void flip(Fixture fixture) {
+        Team temp = fixture.getHomeTeam();
+        fixture.setHomeTeam(fixture.getAwayTeam()) ;
+        fixture.setAwayTeam(temp);
     }
 }

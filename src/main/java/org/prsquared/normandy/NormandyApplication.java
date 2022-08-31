@@ -1,6 +1,7 @@
 package org.prsquared.normandy;
 
 import org.prsquared.normandy.service.Game;
+import org.prsquared.normandy.service.SimulationService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +10,11 @@ public class NormandyApplication {
 
 	public static void main(String[] args) {
 		//SpringApplication.run(NormandyApplication.class, args);
-		new Game().play();
+		try {
+			new SimulationService().simulate();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
