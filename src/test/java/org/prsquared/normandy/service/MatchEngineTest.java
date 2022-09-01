@@ -1,11 +1,11 @@
 package org.prsquared.normandy.service;
 
 import org.junit.jupiter.api.Test;
+import org.prsquared.normandy.enums.AttackStyle;
+import org.prsquared.normandy.enums.DefenceStyle;
 import org.prsquared.normandy.enums.ResultType;
 import org.prsquared.normandy.model.Result;
 import org.prsquared.normandy.model.Team;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 class MatchEngineTest {
@@ -14,8 +14,8 @@ class MatchEngineTest {
     void TestPlayGame() {
         MatchEngine engine =  new MatchEngine();
         engine.isTest = true;
-        Team homeTeam = new Team("A",86,86);
-        Team awayTeam = new Team("B",86,86);
+        Team homeTeam = new Team("A",86,86, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK);
+        Team awayTeam = new Team("B",86,86, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK);
         int homeWinCount = 0;
         int awayWinCount = 0;
         int drawCount = 0;
@@ -45,8 +45,8 @@ class MatchEngineTest {
     void TestPlayGame_Single() {
         MatchEngine engine =  new MatchEngine();
         engine.isTest = false;
-        Team homeTeam = new Team("A",86,86);
-        Team awayTeam = new Team("B",66,66);
+        Team homeTeam = new Team("A",86,86, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK);
+        Team awayTeam = new Team("B",66,66, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK);
         int homeWinCount = 0;
         int awayWinCount = 0;
         int drawCount = 0;

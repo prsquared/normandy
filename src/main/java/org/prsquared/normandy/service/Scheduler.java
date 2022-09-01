@@ -1,12 +1,13 @@
 package org.prsquared.normandy.service;
 
+import org.prsquared.normandy.enums.AttackStyle;
+import org.prsquared.normandy.enums.DefenceStyle;
 import org.prsquared.normandy.model.Fixture;
 import org.prsquared.normandy.model.Round;
 import org.prsquared.normandy.model.Schedule;
 import org.prsquared.normandy.model.Team;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,26 +17,26 @@ public class Scheduler {
         // Find out how many teams we want fixtures for.
 
         List<Team> teamList = new ArrayList<>();
-        teamList.add(new Team("Arsenal", 80,76));
-        teamList.add(new Team("Manchester City", 86,86));
-        teamList.add(new Team("Leeds United", 78,70));
-        teamList.add(new Team("Tottenham", 82,82));
-        teamList.add(new Team("Brighton", 78,78));
-        teamList.add(new Team("Newcastle", 76,76));
-        teamList.add(new Team("Fulham", 74,74));
-        teamList.add(new Team("Brentford", 78,76));
-        teamList.add(new Team("Crystal Palace", 76,76));
-        teamList.add(new Team("Nottingham Forest", 80,76));
-        teamList.add(new Team("Southampton", 80,76));
-        teamList.add(new Team("Chelsea", 82,73));
-        teamList.add(new Team("Aston Villa", 75,76));
-        teamList.add(new Team("Manchester United", 80,78));
-        teamList.add(new Team("Bournemouth", 75,75));
-        teamList.add(new Team("Liverpool", 85,85));
-        teamList.add(new Team("Everton", 75,75));
-        teamList.add(new Team("Wolves", 75,76));
-        teamList.add(new Team("Leicester City", 77,77));
-        teamList.add(new Team("West Ham", 76,76));
+        teamList.add(new Team("Arsenal", 80,76, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Manchester City", 86,86, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Leeds United", 78,70, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Tottenham", 82,82, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Brighton", 78,78, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Newcastle", 76,76, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Fulham", 74,74, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Brentford", 78,76, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Crystal Palace", 76,76, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Nottingham Forest", 80,76, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Southampton", 80,76, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Chelsea", 82,73, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Aston Villa", 75,76, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Manchester United", 80,78, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Bournemouth", 75,75, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Liverpool", 85,85, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Everton", 75,75, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Wolves", 75,76, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("Leicester City", 77,77, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
+        teamList.add(new Team("West Ham", 76,76, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK));
 
         int teams = teamList.size();
         // Generate the fixtures using the cyclic algorithm.
