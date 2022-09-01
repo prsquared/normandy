@@ -23,6 +23,8 @@ public class Team {
         this.offence = offence;
         this.defence = defence;
         this.overall = (Float.valueOf(offence) + Float.valueOf(defence)) / 2;
+        this.attackStyle = attackStyle;
+        this.defenceStyle = defenceStyle;
     }
 
     public Integer getSystemCommitment() {

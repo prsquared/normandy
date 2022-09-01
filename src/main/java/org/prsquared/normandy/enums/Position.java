@@ -1,5 +1,5 @@
 package org.prsquared.normandy.enums;
 
 public enum Position {
-    DEF, ATT, MID
+    DEF, ATT, MID, GK
 }
