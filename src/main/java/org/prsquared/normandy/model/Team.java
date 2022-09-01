@@ -29,6 +29,8 @@ public class Team {
         this.defence = defence;
         this.overall = (Float.valueOf(offence) + Float.valueOf(defence)) / 2;
         this.systemCommitment = systemCommitment;
+        this.attackStyle = attackStyle;
+        this.defenceStyle = defenceStyle;
     }
 
     public Integer getSystemCommitment() {
