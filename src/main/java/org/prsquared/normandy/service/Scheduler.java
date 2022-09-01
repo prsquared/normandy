@@ -148,6 +148,16 @@ public class Scheduler {
                 flip(rnd.getFixtures().get(0));
             }
         }
+        List<Round>  returnRounds = new ArrayList<>();
+        for(Round round: schedule.getRounds()) {
+            List<Fixture> reverseList = new ArrayList<>();
+            for(Fixture fixture: round.getFixtures()) {
+                reverseList.add(reverse(fixture));
+            }
+            Round reverse = new Round(reverseList);
+            returnRounds.add(reverse);
+        }
+        schedule.getRounds().addAll(returnRounds);
         return schedule;
     }
 
@@ -155,5 +165,9 @@ public class Scheduler {
         Team temp = fixture.getHomeTeam();
         fixture.setHomeTeam(fixture.getAwayTeam()) ;
         fixture.setAwayTeam(temp);
+    }
+
+    private Fixture reverse(Fixture fixture) {
+        return new Fixture(fixture.getAwayTeam(),fixture.getHomeTeam());
     }
 }

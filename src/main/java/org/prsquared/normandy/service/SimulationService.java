@@ -1,5 +1,6 @@
 package org.prsquared.normandy.service;
 
+import org.prsquared.normandy.enums.ResultType;
 import org.prsquared.normandy.model.*;
 
 import java.util.ArrayList;
@@ -21,12 +22,12 @@ public class SimulationService {
         teamList.add(new Team("Southampton", 80,76));
         teamList.add(new Team("Chelsea", 82,73));
         teamList.add(new Team("Aston Villa", 75,76));
-        teamList.add(new Team("Manchester United", 80,78));
+        teamList.add(new Team("Manchester United", 80,82));
         teamList.add(new Team("Bournemouth", 75,75));
         teamList.add(new Team("Liverpool", 85,85));
         teamList.add(new Team("Everton", 75,75));
         teamList.add(new Team("Wolves", 75,76));
-        teamList.add(new Team("Leicester City", 77,77));
+        teamList.add(new Team("Leicester City", 80,80));
         teamList.add(new Team("West Ham", 76,76));
         return teamList;
     }
@@ -51,15 +52,62 @@ public class SimulationService {
         Table table = createTable(teams);
         //Update table based on results
         MatchEngine engine = new MatchEngine();
+        engine.fastMode = true;
         int i = 0;
         for(Round round: schedule.getRounds()) {
             System.out.println("Round "+ ++i + "Results");
             for(Fixture fixture: round.getFixtures()) {
                 engine.resetInstanceVars();
                 Result result = engine.playGame(fixture.getHomeTeam(),fixture.getAwayTeam());
+                TableItem homeTeamItem = table.getTableItemByTeam(fixture.getHomeTeam());
+                TableItem awayTeamItem = table.getTableItemByTeam(fixture.getAwayTeam());
+                homeTeamItem.incrementGamesPlayed();
+                awayTeamItem.incrementGamesPlayed();
+                if(result.getResultType().equals(ResultType.HOMEWIN)) {
+                    homeTeamItem.addPoints(3);
+                    homeTeamItem.incrementWon();
+                    awayTeamItem.incrementLost();
+                } else if (result.getResultType().equals(ResultType.AWAYWIN)) {
+                    awayTeamItem.addPoints(3);
+                    awayTeamItem.incrementWon();
+                    homeTeamItem.incrementLost();
+                } else {
+                    homeTeamItem.addPoints(1);
+                    awayTeamItem.addPoints(1);
+                    homeTeamItem.incrementDrawn();
+                    awayTeamItem.incrementDrawn();
+                }
+                homeTeamItem.addGoalsScored(result.getHomeGoals());
+                homeTeamItem.addGoalsConceded(result.getAwayGoals());
+                awayTeamItem.addGoalsScored(result.getAwayGoals());
+                awayTeamItem.addGoalsConceded(result.getHomeGoals());
+                homeTeamItem.setGoalDifference(homeTeamItem.getGoalsScored() - homeTeamItem.getGoalsConceded());
+                awayTeamItem.setGoalDifference(awayTeamItem.getGoalsScored() - awayTeamItem.getGoalsConceded());
                 fixture.setResult(result);
                 System.out.println(result.getScoreString());
             }
+            System.out.println("Team"+getSpaces(4)+"Played  Won  Drawn  Lost  GS  GC  GD  Points");
+            System.out.println("-------------------------------------------------");
+            table.getTableItemList().stream()
+                    .sorted((t1, t2)-> (t2.getPoints().compareTo(t1.getPoints())))
+                    .forEach( t -> {
+                        System.out.println(t.getTeam().getName() +getSpaces(t.getTeam().getName().length())+t.getGamesPlayed()+"           "
+                                +t.getWon()+"       "
+                                +t.getDrawn()+"      "
+                                +t.getLost()+"     "
+                                +t.getGoalsScored()+"  "
+                                +t.getGoalsConceded()+"  "
+                                +t.getGoalDifference()+"  "
+                                +t.getPoints());
+                    });
         }
+    }
+
+    private String getSpaces(int stringLength) {
+        StringBuilder builder = new StringBuilder();
+        for(int i=0;i<20-stringLength;i++){
+            builder.append(" ");
+        }
+        return builder.toString();
     }
 }

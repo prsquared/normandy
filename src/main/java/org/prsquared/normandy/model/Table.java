@@ -10,4 +10,17 @@ public class Table {
         this.tableItemList = tableItemList;
     }
 
+    public List<TableItem> getTableItemList() {
+        return tableItemList;
+    }
+
+    public TableItem getTableItemByTeam(Team team) {
+        for(TableItem item: tableItemList) {
+            if(team.getName().equals(item.getTeam().getName())) {
+                return item;
+            }
+        }
+        return null;
+    }
+
 }

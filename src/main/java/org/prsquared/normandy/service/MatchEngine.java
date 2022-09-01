@@ -10,6 +10,8 @@ public class MatchEngine {
 
     public boolean isTest = false;
 
+    public boolean fastMode = false;
+
     private int homeAttackChance;
     private int awayAttackChance;
     private int homeTeamModifier;
@@ -31,18 +33,18 @@ public class MatchEngine {
         for(int minute = 0; minute < 45; minute++) {
             IncidentType incident = getIncident();
             if(IncidentType.HOMEGOALTHREAT.equals(incident)) {
-                if(!isTest)
+                if(!isTest && !fastMode)
                 System.out.println("Min: "+minute+"- Chance for "+home.getName());
                 if(success(home.getOffence(), away.getDefence())) {
-                    if(!isTest)
+                    if(!isTest && !fastMode)
                     System.out.println("Min: "+minute+"- "+home.getName()+" has scored");
                     homeGoals++;
                 }
             } else if(IncidentType.AWAYGOALTHREAT.equals(incident)) {
-                if(!isTest)
+                if(!isTest && !fastMode)
                 System.out.println("Min: "+minute+"- Chance for "+away.getName());
                 if(success(away.getOffence(), home.getDefence())) {
-                    if(!isTest)
+                    if(!isTest && !fastMode)
                     System.out.println("Min: "+minute+"- "+away.getName()+" has scored");
                     awayGoals++;
                 }
@@ -51,24 +53,24 @@ public class MatchEngine {
         for(int minute = 46; minute < 90; minute++) {
             IncidentType incident = getIncident();
             if(IncidentType.HOMEGOALTHREAT.equals(incident)) {
-                if(!isTest) {
+                if(!isTest && !fastMode) {
                     Thread.sleep(1500);
                     System.out.println("Min: " + minute + "- Chance for " + home.getName());
                 }
                 if(success(home.getOffence(), away.getDefence())) {
-                    if(!isTest) {
+                    if(!isTest && !fastMode) {
                         Thread.sleep(2000);
                         System.out.println("Min: " + minute + "- " + home.getName() + " has scored");
                     }
                     homeGoals++;
                 }
             } else if(IncidentType.AWAYGOALTHREAT.equals(incident)) {
-                if(!isTest) {
+                if(!isTest && !fastMode) {
                     Thread.sleep(1500);
                     System.out.println("Min: " + minute + "- Chance for " + away.getName());
                 }
                 if(success(away.getOffence(), home.getDefence())) {
-                    if(!isTest) {
+                    if(!isTest && !fastMode) {
                         Thread.sleep(2000);
                         System.out.println("Min: " + minute + "- " + away.getName() + " has scored");
                     }
@@ -77,8 +79,10 @@ public class MatchEngine {
             }
         }
         Result result = new Result(home, away, homeGoals,awayGoals);
-        if(!isTest) {
-            Thread.sleep(1500);
+        if(!isTest ) {
+            if(!fastMode) {
+                Thread.sleep(1500);
+            }
             System.out.println("Game has ended with a score of " + result.getScoreString());
         }
 

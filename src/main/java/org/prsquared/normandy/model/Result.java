@@ -38,4 +38,12 @@ public class Result {
     public ResultType getResultType() {
         return resultType;
     }
+
+    public Integer getHomeGoals() {
+        return homeGoals;
+    }
+
+    public Integer getAwayGoals() {
+        return awayGoals;
+    }
 }
