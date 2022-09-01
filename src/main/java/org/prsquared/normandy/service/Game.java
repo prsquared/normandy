@@ -16,8 +16,8 @@ public class Game {
 
     public Result play() {
         MatchEngine engine = new MatchEngine();
-        Team homeTeam = new Team("Manchester United",85,85, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK);
-        Team awayTeam = new Team("Manchester City",86,86, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK);
+        Team homeTeam = new Team("Manchester United",85,85, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK, 100);
+        Team awayTeam = new Team("Manchester City",86,86, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK, 100);
 
         try {
             return engine.playGame(homeTeam,awayTeam);

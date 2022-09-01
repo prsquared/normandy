@@ -4,6 +4,9 @@ import org.prsquared.normandy.enums.AttackStyle;
 import org.prsquared.normandy.enums.DefenceStyle;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class Team {
     private String name;
@@ -18,11 +21,14 @@ public class Team {
 
     private DefenceStyle defenceStyle;
 
-    public Team(String name, Integer offence, Integer defence, AttackStyle attackStyle, DefenceStyle defenceStyle) {
+    private List<Player> players = new ArrayList<>();
+
+    public Team(String name, Integer offence, Integer defence, AttackStyle attackStyle, DefenceStyle defenceStyle, Integer systemCommitment) {
         this.name = name;
         this.offence = offence;
         this.defence = defence;
         this.overall = (Float.valueOf(offence) + Float.valueOf(defence)) / 2;
+        this.systemCommitment = systemCommitment;
     }
 
     public Integer getSystemCommitment() {
@@ -63,5 +69,21 @@ public class Team {
 
     public Float getOverall() {
         return overall;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
+    public void addPlayer(Player player) {
+        this.players.add(player);
+    }
+
+    public void removePlayer(Player player) {
+        this.players.remove(player);
     }
 }

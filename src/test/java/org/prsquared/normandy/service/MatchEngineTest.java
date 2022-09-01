@@ -14,8 +14,8 @@ class MatchEngineTest {
     void TestPlayGame() {
         MatchEngine engine =  new MatchEngine();
         engine.isTest = true;
-        Team homeTeam = new Team("A",86,86, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK);
-        Team awayTeam = new Team("B",86,86, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK);
+        Team homeTeam = new Team("A",86,86, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK, 100);
+        Team awayTeam = new Team("B",86,86, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK, 100);
         int homeWinCount = 0;
         int awayWinCount = 0;
         int drawCount = 0;
@@ -45,8 +45,8 @@ class MatchEngineTest {
     void TestPlayGame_Single() {
         MatchEngine engine =  new MatchEngine();
         engine.isTest = false;
-        Team homeTeam = new Team("A",86,86, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK);
-        Team awayTeam = new Team("B",66,66, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK);
+        Team homeTeam = new Team("A",86,86, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK, 100);
+        Team awayTeam = new Team("B",66,66, AttackStyle.COUNTER_ATTACK, DefenceStyle.LOW_BLOCK, 100);
         int homeWinCount = 0;
         int awayWinCount = 0;
         int drawCount = 0;
