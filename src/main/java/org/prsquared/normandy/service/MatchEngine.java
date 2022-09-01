@@ -1,5 +1,6 @@
 package org.prsquared.normandy.service;
 
+import org.prsquared.normandy.constants.Colors;
 import org.prsquared.normandy.enums.IncidentType;
 import org.prsquared.normandy.model.Result;
 import org.prsquared.normandy.model.Team;
@@ -8,6 +9,8 @@ import java.util.Random;
 
 public class MatchEngine {
 
+    private static final int OFFENSE_PENALTY = 35;
+    private static final int WAIT_TIME = 200;
     public boolean isTest = false;
 
     public boolean fastMode = false;
@@ -29,24 +32,42 @@ public class MatchEngine {
         awayAttackChance = calculateAttackChance(away.getOffence(),home.getDefence());
         homeTeamModifier = homeAttackChance + IncidentType.HOMEGOALTHREAT.getIncidentChance();
         awayTeamModifier = homeTeamModifier + awayAttackChance + IncidentType.AWAYGOALTHREAT.getIncidentChance();
-        System.out.println("Game has started");
+        System.out.println(Colors.ANSI_BLUE+home.getName()+" v "+away.getName()+Colors.ANSI_RESET);
         for(int minute = 0; minute < 45; minute++) {
             IncidentType incident = getIncident();
             if(IncidentType.HOMEGOALTHREAT.equals(incident)) {
-                if(!isTest && !fastMode)
-                System.out.println("Min: "+minute+"- Chance for "+home.getName());
+                if(!isTest && !fastMode) {
+                    Thread.sleep(WAIT_TIME);
+                    System.out.println("Min: " + minute + "- Chance for " + home.getName());
+                }
                 if(success(home.getOffence(), away.getDefence())) {
-                    if(!isTest && !fastMode)
-                    System.out.println("Min: "+minute+"- "+home.getName()+" has scored");
+                    if(!isTest && !fastMode) {
+                        Thread.sleep(WAIT_TIME);
+                        System.out.println(Colors.ANSI_RED+"----- " + home.getName() + " has scored"+Colors.ANSI_RESET);
+                    }
                     homeGoals++;
+                } else {
+                    if(!isTest && !fastMode) {
+                        Thread.sleep(WAIT_TIME);
+                        System.out.println("----- Missed opportunity to score");
+                    }
                 }
             } else if(IncidentType.AWAYGOALTHREAT.equals(incident)) {
-                if(!isTest && !fastMode)
-                System.out.println("Min: "+minute+"- Chance for "+away.getName());
+                if(!isTest && !fastMode) {
+                    Thread.sleep(WAIT_TIME);
+                    System.out.println("Min: " + minute + "- Chance for " + away.getName());
+                }
                 if(success(away.getOffence(), home.getDefence())) {
-                    if(!isTest && !fastMode)
-                    System.out.println("Min: "+minute+"- "+away.getName()+" has scored");
+                    if(!isTest && !fastMode) {
+                        Thread.sleep(WAIT_TIME);
+                        System.out.println(Colors.ANSI_RED+"----- " + away.getName() + " has scored"+Colors.ANSI_RESET);
+                    }
                     awayGoals++;
+                } else {
+                    if(!isTest && !fastMode) {
+                        Thread.sleep(WAIT_TIME);
+                        System.out.println("----- Missed opportunity to score");
+                    }
                 }
             }
         }
@@ -54,36 +75,46 @@ public class MatchEngine {
             IncidentType incident = getIncident();
             if(IncidentType.HOMEGOALTHREAT.equals(incident)) {
                 if(!isTest && !fastMode) {
-                    Thread.sleep(1500);
+                    Thread.sleep(WAIT_TIME);
                     System.out.println("Min: " + minute + "- Chance for " + home.getName());
                 }
                 if(success(home.getOffence(), away.getDefence())) {
                     if(!isTest && !fastMode) {
-                        Thread.sleep(2000);
-                        System.out.println("Min: " + minute + "- " + home.getName() + " has scored");
+                        Thread.sleep(WAIT_TIME);
+                        System.out.println(Colors.ANSI_RED+"------- " + home.getName() + " has scored"+Colors.ANSI_RESET);
                     }
                     homeGoals++;
+                } else {
+                    if(!isTest && !fastMode) {
+                        Thread.sleep(WAIT_TIME);
+                        System.out.println("----- Missed opportunity to score");
+                    }
                 }
             } else if(IncidentType.AWAYGOALTHREAT.equals(incident)) {
                 if(!isTest && !fastMode) {
-                    Thread.sleep(1500);
+                    Thread.sleep(WAIT_TIME);
                     System.out.println("Min: " + minute + "- Chance for " + away.getName());
                 }
                 if(success(away.getOffence(), home.getDefence())) {
                     if(!isTest && !fastMode) {
-                        Thread.sleep(2000);
-                        System.out.println("Min: " + minute + "- " + away.getName() + " has scored");
+                        Thread.sleep(WAIT_TIME);
+                        System.out.println(Colors.ANSI_RED+"------- " + away.getName() + " has scored"+Colors.ANSI_RESET);
                     }
                     awayGoals++;
+                } else {
+                    if(!isTest && !fastMode) {
+                        Thread.sleep(WAIT_TIME);
+                        System.out.println("----- Missed opportunity to score");
+                    }
                 }
             }
         }
         Result result = new Result(home, away, homeGoals,awayGoals);
         if(!isTest ) {
             if(!fastMode) {
-                Thread.sleep(1500);
+                Thread.sleep(WAIT_TIME);
             }
-            System.out.println("Game has ended with a score of " + result.getScoreString());
+            System.out.println(Colors.ANSI_BLUE+"Game has ended with a score of " + result.getScoreString()+Colors.ANSI_RESET);
         }
 
 
@@ -108,7 +139,7 @@ public class MatchEngine {
     private static boolean success(int offence, int defence) {
         Random random = new Random();
         int randNum = random.nextInt(101);
-        if(randNum <= offence - (20 - (offence - defence))) {
+        if(randNum <= offence - (OFFENSE_PENALTY - (offence - defence))) {
             return true;
         }
         return false;

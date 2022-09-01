@@ -11,6 +11,8 @@ public class Team {
 
     private Float overall;
 
+    private Integer systemCommitment = 0;
+
     public Team(String name, Integer offence, Integer defence) {
         this.name = name;
         this.offence = offence;

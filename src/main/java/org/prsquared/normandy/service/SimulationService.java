@@ -1,12 +1,17 @@
 package org.prsquared.normandy.service;
 
+import org.prsquared.normandy.constants.Colors;
 import org.prsquared.normandy.enums.ResultType;
 import org.prsquared.normandy.model.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class SimulationService {
+
+    MatchEngine matchEngine = new MatchEngine();
     public List<Team> populateTeams() {
         List<Team> teamList = new ArrayList<>();
         teamList.add(new Team("Arsenal", 80,76));
@@ -20,15 +25,16 @@ public class SimulationService {
         teamList.add(new Team("Crystal Palace", 76,76));
         teamList.add(new Team("Nottingham Forest", 80,76));
         teamList.add(new Team("Southampton", 80,76));
-        teamList.add(new Team("Chelsea", 82,73));
+        teamList.add(new Team("Chelsea", 82,77));
         teamList.add(new Team("Aston Villa", 75,76));
-        teamList.add(new Team("Manchester United", 80,82));
+        teamList.add(new Team("Manchester United", 82,84));
         teamList.add(new Team("Bournemouth", 75,75));
         teamList.add(new Team("Liverpool", 85,85));
         teamList.add(new Team("Everton", 75,75));
         teamList.add(new Team("Wolves", 75,76));
         teamList.add(new Team("Leicester City", 80,80));
         teamList.add(new Team("West Ham", 76,76));
+        Collections.shuffle(teamList);
         return teamList;
     }
 
@@ -46,13 +52,14 @@ public class SimulationService {
         return scheduler.createSchedule(teamList);
     }
 
-    public void simulate() throws InterruptedException {
+    public Table simulate() throws InterruptedException {
         List<Team> teams = populateTeams();
         Schedule schedule = createSchedule(teams);
         Table table = createTable(teams);
         //Update table based on results
         MatchEngine engine = new MatchEngine();
         engine.fastMode = true;
+        engine.isTest = true;
         int i = 0;
         for(Round round: schedule.getRounds()) {
             System.out.println("Round "+ ++i + "Results");
@@ -86,26 +93,31 @@ public class SimulationService {
                 fixture.setResult(result);
                 System.out.println(result.getScoreString());
             }
-            System.out.println("Team"+getSpaces(4)+"Played  Won  Drawn  Lost  GS  GC  GD  Points");
-            System.out.println("-------------------------------------------------");
+            System.out.println(Colors.ANSI_PURPLE+"Team"+getSpaces(20,4)+"Played  Won  Drawn  Lost  GS     GC     GD    Points");
+            System.out.println("------------------------------------------------------------------------"+Colors.ANSI_RESET);
+            Comparator<TableItem> compareByPoints = Comparator.comparing(TableItem::getPoints)
+                                                                .thenComparingInt(TableItem::getGoalDifference)
+                                                                        .thenComparingInt(TableItem::getGoalsScored).reversed();
+
             table.getTableItemList().stream()
-                    .sorted((t1, t2)-> (t2.getPoints().compareTo(t1.getPoints())))
+                    .sorted(compareByPoints)
                     .forEach( t -> {
-                        System.out.println(t.getTeam().getName() +getSpaces(t.getTeam().getName().length())+t.getGamesPlayed()+"           "
-                                +t.getWon()+"       "
-                                +t.getDrawn()+"      "
-                                +t.getLost()+"     "
-                                +t.getGoalsScored()+"  "
-                                +t.getGoalsConceded()+"  "
-                                +t.getGoalDifference()+"  "
+                        System.out.println(t.getTeam().getName() +getSpaces(20, t.getTeam().getName().length())+t.getGamesPlayed()+getSpaces(7,String.valueOf(t.getGamesPlayed()).length())
+                                +t.getWon()+getSpaces(6,String.valueOf(t.getWon()).length())
+                                +t.getDrawn()+getSpaces(7,String.valueOf(t.getDrawn()).length())
+                                +t.getLost()+getSpaces(6,String.valueOf(t.getLost()).length())
+                                +t.getGoalsScored()+getSpaces(7,String.valueOf(t.getGoalsScored()).length())
+                                +t.getGoalsConceded()+getSpaces(7,String.valueOf(t.getGoalsConceded()).length())
+                                +t.getGoalDifference()+getSpaces(7,String.valueOf(t.getGoalDifference()).length())
                                 +t.getPoints());
                     });
         }
+        return table;
     }
 
-    private String getSpaces(int stringLength) {
+    private String getSpaces(int maxspace, int stringLength) {
         StringBuilder builder = new StringBuilder();
-        for(int i=0;i<20-stringLength;i++){
+        for(int i=0;i<maxspace-stringLength;i++){
             builder.append(" ");
         }
         return builder.toString();
