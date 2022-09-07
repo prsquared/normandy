@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class NormandyApplication {
 
 	public static void main(String[] args) {
-		//SpringApplication.run(NormandyApplication.class, args);
+		SpringApplication.run(NormandyApplication.class, args);
 		try {
 			SimulationService service = new SimulationService();
 			service.fastMode = false;

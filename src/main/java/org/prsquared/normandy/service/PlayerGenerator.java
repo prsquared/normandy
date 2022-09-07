@@ -11,6 +11,7 @@ import org.prsquared.normandy.model.Team;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PlayerGenerator {
 
@@ -23,8 +24,20 @@ public class PlayerGenerator {
 
     public static List<Player> generatePlayers(Team team) {
         List<Player> playerList = new ArrayList<>();
-        for(int i=0;i<11;i++)
-            playerList.add(generate(team.getOverall().intValue(),Position.ATT,team.getAttackStyle(),team.getDefenceStyle()));
+        playerList.add(generate(team.getOverall().intValue(),Position.GK,team.getAttackStyle(),team.getDefenceStyle()));
+        for(int i=0;i<4;i++)
+            playerList.add(generate(generatePlayerRating(team.getOverall().intValue()),Position.DEF,team.getAttackStyle(),team.getDefenceStyle()));
+        for(int i=0;i<3;i++)
+            playerList.add(generate(generatePlayerRating(team.getOverall().intValue()),Position.MID,team.getAttackStyle(),team.getDefenceStyle()));
+        for(int i=0;i<3;i++)
+            playerList.add(generate(generatePlayerRating(team.getOverall().intValue()),Position.ATT,team.getAttackStyle(),team.getDefenceStyle()));
         return playerList;
+    }
+
+    public static int generatePlayerRating(int overall){
+        Random random = new Random();
+        int randomVal = random.nextInt(10) - 20;
+        System.out.println("Random factor:"+randomVal);
+        return overall + randomVal;
     }
 }

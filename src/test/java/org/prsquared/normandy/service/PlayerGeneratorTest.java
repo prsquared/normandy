@@ -20,10 +20,12 @@ class PlayerGeneratorTest {
 
     @Test
     void TestGeneratePlayers() {
-        Team team = new Team("Manchester United", 82,84, AttackStyle.POSSESSION, DefenceStyle.HIGH_PRESS);
+        Team team = new Team("Manchester United", 82,84, AttackStyle.POSSESSION, DefenceStyle.HIGH_PRESS, 100);
         List<Player> players = PlayerGenerator.generatePlayers(team);
         for(Player player: players) {
-            System.out.println("Player Name:"+player.getFirstName()+" "+player.getSurname());
+            System.out.println("Player Name: "+player.getFirstName()+" "+player.getSurname());
+            System.out.println("Rating: "+player.getOverall());
+            System.out.println("Position: "+player.getPosition().toString());
         }
     }
 }
