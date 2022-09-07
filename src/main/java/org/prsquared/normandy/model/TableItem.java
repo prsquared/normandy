@@ -1,5 +1,8 @@
 package org.prsquared.normandy.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class TableItem {
     private Team team;
 

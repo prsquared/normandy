@@ -32,6 +32,9 @@ public class Team {
         this.attackStyle = attackStyle;
         this.defenceStyle = defenceStyle;
     }
+    public Team() {
+
+    }
 
     public Integer getSystemCommitment() {
         return systemCommitment;

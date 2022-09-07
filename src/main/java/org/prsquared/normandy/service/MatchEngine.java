@@ -4,9 +4,11 @@ import org.prsquared.normandy.constants.Colors;
 import org.prsquared.normandy.enums.IncidentType;
 import org.prsquared.normandy.model.Result;
 import org.prsquared.normandy.model.Team;
+import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
+@Service
 public class MatchEngine {
 
     private static final int OFFENSE_PENALTY = 35;

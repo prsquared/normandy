@@ -5,12 +5,13 @@ import org.prsquared.normandy.enums.AttackStyle;
 import org.prsquared.normandy.enums.DefenceStyle;
 import org.prsquared.normandy.enums.ResultType;
 import org.prsquared.normandy.model.*;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
+@Service
 public class SimulationService {
 
     public boolean fastMode = false;

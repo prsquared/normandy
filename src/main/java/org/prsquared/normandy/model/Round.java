@@ -1,7 +1,9 @@
 package org.prsquared.normandy.model;
 
-import java.util.List;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+@Component
 public class Round {
     private List<Fixture> fixtures;
 

@@ -8,11 +8,12 @@ import org.prsquared.normandy.enums.DefenceStyle;
 import org.prsquared.normandy.enums.Position;
 import org.prsquared.normandy.model.Player;
 import org.prsquared.normandy.model.Team;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+@Service
 public class PlayerGenerator {
 
     public static Player generate(int overall, Position position, AttackStyle attackStyle, DefenceStyle style) {

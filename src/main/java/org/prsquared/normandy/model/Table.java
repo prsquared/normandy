@@ -1,8 +1,10 @@
 package org.prsquared.normandy.model;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class Table {
     List<TableItem> tableItemList = new ArrayList<>();
 

@@ -31,6 +31,9 @@ public class Result {
             resultType = ResultType.DRAW;
         }
     }
+    public Result() {
+
+    }
 
     public String getScoreString() {
         return scoreString;

@@ -10,14 +10,14 @@ public class NormandyApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(NormandyApplication.class, args);
-		try {
+		/*try {
 			SimulationService service = new SimulationService();
 			service.fastMode = false;
 			service.isTest = false;
 			service.simulate();
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
-		}
+		}*/
 	}
 
 }

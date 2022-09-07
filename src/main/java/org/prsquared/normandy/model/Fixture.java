@@ -1,5 +1,8 @@
 package org.prsquared.normandy.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Fixture {
     private Team homeTeam;
     private Team awayTeam;

@@ -6,11 +6,12 @@ import org.prsquared.normandy.model.Fixture;
 import org.prsquared.normandy.model.Round;
 import org.prsquared.normandy.model.Schedule;
 import org.prsquared.normandy.model.Team;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+@Service
 public class Scheduler {
     public static void main(String[] args) {
 
